@@ -1,0 +1,33 @@
+# ── Node / Frontend ──
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# ── Java / Maven ──
+backend/target/
+backend/.mvn/repository/
+*.class
+*.jar
+*.war
+
+# ── IDE ──
+.idea/
+*.iml
+.vscode/
+*.suo
+*.user
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ──
+*.log
+logs/
+
+# ── Sensitive ──
+*.env

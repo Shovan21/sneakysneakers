@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My E-Commerce Store</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .card { background: white; padding: 15px; margin: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        button { background: #28a745; color: white; border: none; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Shovan's Store</h1>
+    <div id="login-section">
+        <input type="text" id="user" placeholder="Username">
+        <input type="password" id="pass" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="product-list"></div>
+
+    <script>
+        let token = "";
+
+        async function login() {
+            const user = document.getElementById('user').value;
+            const pass = document.getElementById('pass').value;
+            const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({username: user, password: pass})
+            });
+            token = await res.text();
+            alert("Login Successful! Key received.");
+            loadProducts();
+        }
+
+        async function loadProducts() {
+            const res = await fetch('/api/products', {
+                headers: {'Authorization': 'Bearer ' + token}
+            });
+            const products = await res.json();
+            let html = "<h2>Products</h2>";
+            products.forEach(p => {
+                html += `<div class="card">
+                    <h3>${p.name}</h3>
+                    <p>${p.description} - $${p.price}</p>
+                    <button onclick="addToCart(${p.id})">Add to Cart</button>
+                </div>`;
+            });
+            document.getElementById('product-list').innerHTML = html;
+        }
+
+        async function addToCart(id) {
+            const res = await fetch(`/api/cart/add/${id}/1`, {
+                method: 'POST',
+                headers: {'Authorization': 'Bearer ' + token}
+            });
+            const msg = await res.text();
+            alert(msg);
+        }
+    </script>
+</body>
+</html>
