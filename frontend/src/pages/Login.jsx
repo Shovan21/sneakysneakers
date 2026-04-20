@@ -12,10 +12,13 @@ const Login = () => {
   const { login, register } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setMessage('');
+    setIsSubmitting(true);
 
     if (isLogin) {
       const res = await login(username, password);
@@ -30,6 +33,7 @@ const Login = () => {
         setError(res.message);
       }
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -83,8 +87,8 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-dark w-full mt-6" style={{ padding: '14px' }}>
-            {isLogin ? 'Sign In' : 'Create Account'}
+          <button type="submit" className="btn btn-dark w-full mt-6" style={{ padding: '14px' }} disabled={isSubmitting}>
+            {isSubmitting ? 'Please wait...' : (isLogin ? 'Sign In' : 'Create Account')}
           </button>
         </form>
 
