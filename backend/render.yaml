@@ -1,9 +1,7 @@
 services:
   - type: web
     name: sneakysneakers-backend
-    env: java
-    buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/*.jar"
+    env: docker
     plan: free
     envVars:
       - key: DB_URL
